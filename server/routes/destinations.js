@@ -8,7 +8,7 @@ router.use(function timelog(req, res, next) {
   next();
 });
 
-router.post("/saveDestination", async (req, res, next) => {
+router.post("/destinations", async (req, res, next) => {
   console.log(req.body);
   await db.Destination.create({
     tripID: req.body.tripID,
@@ -27,7 +27,7 @@ router.post("/saveDestination", async (req, res, next) => {
   // res.send('hit')
 });
 
-router.get("/getDestinations/:tripID/:dayCode", async (req, res, next) => {
+router.get("/destinations/:tripID/:dayCode", async (req, res, next) => {
   const { tripID, dayCode } = req.params;
   console.log(dayCode);
   console.log(req.params);

@@ -10,7 +10,7 @@ router.use(function timelog(req, res, next) {
     next();
 });
 
-router.post('/saveTrip', async (req, res, next) => {
+router.post('/trips', async (req, res, next) => {
     console.log(req.body)
     const tripName = req.body.tripName.toLowerCase()
 
@@ -25,6 +25,7 @@ router.post('/saveTrip', async (req, res, next) => {
 
             } catch (error) {
                 console.log(error);
+                res.status(400).send(error)
             }
         } else {
             console.log(results)
@@ -38,7 +39,7 @@ router.post('/saveTrip', async (req, res, next) => {
     // res.send('hit')
 });
 
-router.get('/getTrips', async (req, res, next) => {
+router.get('/trips', async (req, res, next) => {
     try {
         const records = await db.Trip.findAll({ include: [{ model: db.Destination }] })
         res.send(records)
