@@ -42,40 +42,22 @@ app.use(express.json());
 //setup public folder
 app.use(express.static('./public'));
 
+app.use(require('./routes/authentication.js'))
+app.use(require('./routes/yelpCall.js'));
+app.use(require('./routes/destinations.js'));
+app.use(require('./routes/trips.js'));
 
-app.post('/', async (req, res, next) => {
-    // res.send('api works')
-    console.log('object');
-    const { term, location } = req.body;
-    
+app.get('/getDestinations/:tripID:day', async (req, res, next) => {
+    const { tripID, day } = req.params;
+    console.log(req.params)
     try {
-        let response = await axios.get(`https://api.yelp.com/v3/businesses/search?term=${term}&location=${location}&limit=50`,
-            {
-                headers: {
-                Authorization: process.env.YELP_KEY
-            }
-        }
-        )
-            // .then((response) => {
-            //     console.log(response);
-            //     res.send(response)
-            // })
-            // .then((data) => {
-            //     console.log(data);
-            // res.send(data)
-            // })
-        console.log(response.data);
-        res.send(response.data.businesses)
-    }
-    catch (error) {
+        const records = await db.Destination.findAll({ where:{tripID:tripID, day:day} })
+        res.send(records)
+    } catch (error) {
         console.log(error)
-        res.send(error)
     }
-    // const resJson = response.JSON()
-    // res.send(resJson)
-    // console.log(response);
-    
 })
+
 app.get('*', (req, res, next) => {
     console.log("get catch all hit");
     res.send('catchall')
