@@ -11,6 +11,7 @@ module.exports = {
       },
       tripID: {
         type: Sequelize.INTEGER,
+        onDelete: "CASCADE",
         references: {
           model: 'Trips',
           key: 'id',
